@@ -51,8 +51,6 @@ public class RunController {
 
 		currentRun.setDate(run.getDate());
 		currentRun.setDuration(run.getDuration());
-		currentRun.setPace(run.getPace());
-		currentRun.setRouteId(run.getRouteId());
 
 		currentRun = runRepository.save(run);
 
