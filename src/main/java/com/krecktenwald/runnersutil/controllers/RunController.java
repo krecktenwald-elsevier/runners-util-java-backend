@@ -49,7 +49,7 @@ public class RunController {
 	public ResponseEntity updateRun(@PathVariable Long id, @RequestBody Run run) {
 		Run currentRun = runRepository.findById(id).orElseThrow(RuntimeException::new);
 
-		currentRun.setDate(run.getDate());
+		currentRun.setDateTime(run.getDateTime());
 		currentRun.setDuration(run.getDuration());
 
 		currentRun = runRepository.save(run);
