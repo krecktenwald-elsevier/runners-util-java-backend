@@ -1,6 +1,7 @@
 package com.krecktenwald.runnersutil.domain;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +18,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -26,8 +26,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @EntityListeners(AuditingEntityListener.class)
 public class Run {
 
-	private static final DateTimeFormatter SELECTED_DATE_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
-	private static final DateTimeFormatter SELECTED_TIME_FORMATTER = DateTimeFormat.forPattern("HH:mm");
+	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
+	private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormat.forPattern("HH:mm");
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,14 +37,17 @@ public class Run {
 	@Column(name = "dateTime", nullable = true)
 	private Date dateTime;
 
+	@JsonProperty
+	private String localDate;
+
+	@JsonProperty
+	private String localTime;
+
 	@Column(name = "duration", nullable = true)
 	private long duration;
 
 	@JsonProperty
-	private String localDateSelection;
-
-	@JsonProperty
-	private String localTimeSelection;
+	private String durationFormatted;
 
 	public Run() {}
 
@@ -64,6 +67,24 @@ public class Run {
 		this.dateTime = dateTime;
 	}
 
+	public String getLocalDate() {
+		DateTime dt = new DateTime(getDateTime());
+		return DATE_FORMATTER.print(dt);
+	}
+
+	public void setLocalDate(String localDate) {
+		this.localDate = localDate;
+	}
+
+	public String getLocalTime() {
+		DateTime dt = new DateTime(getDateTime());
+		return TIME_FORMATTER.print(dt);
+	}
+
+	public void setLocalTime(String localTime) {
+		this.localTime = localTime;
+	}
+
 	public long getDuration() {
 		return duration;
 	}
@@ -72,22 +93,19 @@ public class Run {
 		this.duration = duration;
 	}
 
-	public String getLocalDateSelection() {
-		DateTime dt = new DateTime(getDateTime());
-		return SELECTED_DATE_FORMATTER.print(dt);
+	public String getDurationFormatted() {
+		long milliseconds = getDuration();
 
+		long hours = TimeUnit.MILLISECONDS.toHours(milliseconds);
+		milliseconds -= TimeUnit.HOURS.toMillis(hours);
+		long minutes = TimeUnit.MILLISECONDS.toMinutes(milliseconds);
+		milliseconds -= TimeUnit.MINUTES.toMillis(minutes);
+		long seconds = TimeUnit.MILLISECONDS.toSeconds(milliseconds);
+
+		return String.format("%02d:%02d:%02d", hours, minutes, seconds);
 	}
 
-	public void setLocalDateSelection(String localDateSelection) {
-		this.localDateSelection = localDateSelection;
-	}
-
-	public String getLocalTimeSelection() {
-		DateTime dt = new DateTime(getDateTime());
-		return SELECTED_TIME_FORMATTER.print(dt);
-	}
-
-	public void setLocalTimeSelection(String localTimeSelection) {
-		this.localTimeSelection = localTimeSelection;
+	public void setDurationFormatted(String durationFormatted) {
+		this.durationFormatted = durationFormatted;
 	}
 }
