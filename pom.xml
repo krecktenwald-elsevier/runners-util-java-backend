@@ -11,7 +11,7 @@
 	<groupId>com.krecktenwald</groupId>
 	<artifactId>runners-util-java-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>runners-util</name>
+	<name>runners-util-java-backend</name>
 	<description>Runner&apos;s Utility Application</description>
 	<properties>
 		<java.version>1.8</java.version>
