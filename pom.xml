@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.krecktenwald</groupId>
-	<artifactId>runners-util</artifactId>
+	<artifactId>runners-util-java-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>runners-util</name>
 	<description>Runner&apos;s Utility Application</description>
