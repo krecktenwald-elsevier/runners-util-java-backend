@@ -49,6 +49,11 @@ public class Run {
 	@JsonProperty
 	private String durationFormatted;
 
+	@Column(name = "distance", nullable = true)
+	public Double getDistance() {
+		return distance;
+	}
+
 	public Run() {}
 
 	public long getId() {
@@ -95,7 +100,6 @@ public class Run {
 
 	public String getDurationFormatted() {
 		long milliseconds = getDuration();
-
 		long hours = TimeUnit.MILLISECONDS.toHours(milliseconds);
 		milliseconds -= TimeUnit.HOURS.toMillis(hours);
 		long minutes = TimeUnit.MILLISECONDS.toMinutes(milliseconds);
@@ -108,4 +112,11 @@ public class Run {
 	public void setDurationFormatted(String durationFormatted) {
 		this.durationFormatted = durationFormatted;
 	}
+
+	public void setDistance(Double distance) {
+		this.distance = distance;
+	}
+
+	@Column(name = "distance", nullable = true)
+	private Double distance;
 }

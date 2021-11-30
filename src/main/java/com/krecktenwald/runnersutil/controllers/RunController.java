@@ -51,6 +51,7 @@ public class RunController {
 
 		currentRun.setDateTime(run.getDateTime());
 		currentRun.setDuration(run.getDuration());
+		currentRun.setDistance(run.getDistance());
 
 		currentRun = runRepository.save(run);
 
