@@ -1,4 +1,4 @@
-package com.krecktenwald.runnersutil.domain;
+package com.krecktenwald.runnersutil.domain.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,13 +6,19 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "route")
 @EntityListeners(AuditingEntityListener.class)
+@Data
 public class Route {
 
 	@Id
@@ -22,38 +28,9 @@ public class Route {
 	@Column(name = "name", nullable = true)
 	private String name;
 
-	@Column(name = "mileage", nullable = true)
-	private double mileage;
+	@Column(name = "approxMileage", nullable = true)
+	private double approxMileage;
 
-	public Route() {}
-
-	public Route(String name, double mileage) {
-		this.name = name;
-		this.mileage = mileage;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public double getMileage() {
-		return mileage;
-	}
-
-	public void setMileage(double mileage) {
-		this.mileage = mileage;
-	}
+	@OneToOne(mappedBy = "route")
+	private Run run;
 }
-

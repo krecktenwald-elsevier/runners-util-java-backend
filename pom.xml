@@ -15,9 +15,8 @@
 	<description>Runner&apos;s Utility Application</description>
 	<properties>
 		<java.version>1.8</java.version>
-		<frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
-		<node.version>v10.14.2</node.version>
-		<yarn.version>v1.12.1</yarn.version>
+		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+		<lombok.version>1.18.22</lombok.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -52,6 +51,37 @@
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${org.mapstruct.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>${org.mapstruct.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>6.0.13.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.el</artifactId>
+			<version>3.0.0</version>
+		</dependency>
     </dependencies>
 
 	<build>
@@ -83,54 +113,29 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>com.github.eirslett</groupId>
-				<artifactId>frontend-maven-plugin</artifactId>
-				<version>${frontend-maven-plugin.version}</version>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.9.0</version>
 				<configuration>
-					<workingDirectory>frontend</workingDirectory>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${org.mapstruct.version}</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<dependency>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>0.2.0</version>
+						</dependency>
+					</annotationProcessorPaths>
 				</configuration>
-				<executions>
-					<execution>
-						<id>install node</id>
-						<goals>
-							<goal>install-node-and-yarn</goal>
-						</goals>
-						<configuration>
-							<nodeVersion>${node.version}</nodeVersion>
-							<yarnVersion>${yarn.version}</yarnVersion>
-						</configuration>
-					</execution>
-					<execution>
-						<id>yarn install</id>
-						<goals>
-							<goal>yarn</goal>
-						</goals>
-						<phase>generate-resources</phase>
-					</execution>
-					<execution>
-						<id>yarn test</id>
-						<goals>
-							<goal>yarn</goal>
-						</goals>
-						<phase>test</phase>
-						<configuration>
-							<arguments>test</arguments>
-							<environmentVariables>
-								<CI>true</CI>
-							</environmentVariables>
-						</configuration>
-					</execution>
-					<execution>
-						<id>yarn build</id>
-						<goals>
-							<goal>yarn</goal>
-						</goals>
-						<phase>compile</phase>
-						<configuration>
-							<arguments>build</arguments>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
