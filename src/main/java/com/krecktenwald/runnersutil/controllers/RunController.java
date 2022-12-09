@@ -44,20 +44,20 @@ public class RunController {
 	}
 
 	@GetMapping("/{id}")
-	public Run getRun(@PathVariable Long id) {
+	public Run getRun(@PathVariable String id) {
 		return runRepository.findById(id).orElseThrow(RuntimeException::new);
 	}
 
-	@PostMapping
+	@PostMapping()
 	public ResponseEntity<Run> createRun(@RequestBody @Valid RunDTO runDTO) throws URISyntaxException {
 		Run run = dtoMapper.runDTOToRun(runDTO);
 		run.setCreateDate(new Date());
 		Run savedRun = runRepository.save(run);
-		return ResponseEntity.created(new URI("/runs/" + savedRun.getId())).body(savedRun);
+		return ResponseEntity.created(new URI("/runs/" + savedRun.getRunId())).body(savedRun);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Run> updateRun(@PathVariable Long id, @RequestBody RunDTO runDTO) {
+	public ResponseEntity<Run> updateRun(@PathVariable String id, @RequestBody RunDTO runDTO) {
 		Run currentRun = runRepository.findById(id).orElseThrow(RuntimeException::new);
 
 		currentRun.setDateTime(runDTO.getDateTime());
@@ -71,7 +71,7 @@ public class RunController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Run> deleteRun(@PathVariable Long id) {
+	public ResponseEntity<Run> deleteRun(@PathVariable String id) {
 		runRepository.deleteById(id);
 		return ResponseEntity.ok().build();
 	}

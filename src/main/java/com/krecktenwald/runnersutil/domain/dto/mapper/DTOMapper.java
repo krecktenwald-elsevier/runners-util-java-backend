@@ -4,8 +4,10 @@ import org.mapstruct.Mapper;
 
 import com.krecktenwald.runnersutil.domain.dto.RouteDTO;
 import com.krecktenwald.runnersutil.domain.dto.RunDTO;
+import com.krecktenwald.runnersutil.domain.dto.UserDTO;
 import com.krecktenwald.runnersutil.domain.entities.Route;
 import com.krecktenwald.runnersutil.domain.entities.Run;
+import com.krecktenwald.runnersutil.domain.entities.User;
 
 /**
  * * A MapStruct (mapstruct.org) based mapping interface for converting
@@ -17,4 +19,6 @@ public abstract class DTOMapper {
 	public abstract Route routeDTOToRoute(RouteDTO value);
 
 	public abstract Run runDTOToRun(RunDTO value);
+
+	public abstract User userDTOToUser(UserDTO value);
 }
