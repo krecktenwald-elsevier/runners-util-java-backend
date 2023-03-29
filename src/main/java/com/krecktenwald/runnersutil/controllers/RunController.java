@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -51,6 +52,7 @@ public class RunController {
 	@PostMapping()
 	public ResponseEntity<Run> createRun(@RequestBody @Valid RunDTO runDTO) throws URISyntaxException {
 		Run run = dtoMapper.runDTOToRun(runDTO);
+		run.setRunId(UUID.randomUUID().toString());
 		run.setCreateDate(new Date());
 		Run savedRun = runRepository.save(run);
 		return ResponseEntity.created(new URI("/runs/" + savedRun.getRunId())).body(savedRun);

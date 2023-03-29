@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -54,6 +55,7 @@ public class RouteController {
 	@PostMapping()
 	public ResponseEntity<Route> createRoute(@RequestBody @Valid RouteDTO routeDTO) throws URISyntaxException {
 		Route route = dtoMapper.routeDTOToRoute(routeDTO);
+		route.setRouteId(UUID.randomUUID().toString());
 		route.setCreateDate(new Date());
 		Route savedRoute = routeRepository.save(route);
 		return ResponseEntity.created(new URI("/routes/" + savedRoute.getRouteId())).body(savedRoute);
