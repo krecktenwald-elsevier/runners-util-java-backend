@@ -20,13 +20,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.krecktenwald.runnersutil.domain.dto.RouteDTO;
-import com.krecktenwald.runnersutil.domain.dto.RunDTO;
-import com.krecktenwald.runnersutil.domain.dto.mapper.DTOMapper;
+import com.krecktenwald.runnersutil.domain.dto.mapper.impl.RouteDTO;
+import com.krecktenwald.runnersutil.domain.dto.mapper.impl.DTOMapper;
 import com.krecktenwald.runnersutil.domain.entities.Route;
-import com.krecktenwald.runnersutil.domain.entities.Run;
 import com.krecktenwald.runnersutil.repositories.RouteRepository;
-import com.krecktenwald.runnersutil.repositories.RunRepository;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -36,7 +33,7 @@ public class RouteController {
 	private final RouteRepository routeRepository;
 
 	@Autowired
-	DTOMapper dtoMapper;
+	private DTOMapper dtoMapper;
 
 	public RouteController(RouteRepository routeRepository) {
 		this.routeRepository = routeRepository;
@@ -54,7 +51,7 @@ public class RouteController {
 
 	@PostMapping()
 	public ResponseEntity<Route> createRoute(@RequestBody @Valid RouteDTO routeDTO) throws URISyntaxException {
-		Route route = dtoMapper.routeDTOToRoute(routeDTO);
+		Route route = dtoMapper.map(routeDTO);
 		route.setRouteId(UUID.randomUUID().toString());
 		route.setCreateDate(new Date());
 		Route savedRoute = routeRepository.save(route);
@@ -69,7 +66,7 @@ public class RouteController {
 		currentRoute.setDistance(routeDTO.getDistance());
 		currentRoute.setUpdateDate(new Date());
 
-		currentRoute = routeRepository.save(dtoMapper.routeDTOToRoute(routeDTO));
+		currentRoute = routeRepository.save(dtoMapper.map(routeDTO));
 
 		return ResponseEntity.ok(currentRoute);
 	}

@@ -2,23 +2,16 @@ package com.krecktenwald.runnersutil.domain.dto;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
-import lombok.Data;
+import com.krecktenwald.runnersutil.domain.dto.mapper.VisitableCRUDEntityDTO;
 
-@Data
-public class RouteDTO {
-	private String routeId;
+import lombok.Getter;
+import lombok.Setter;
 
-	private String name;
-
-	private Integer distance;
-
+@Getter
+@Setter
+public abstract class AbstractCRUDEntityDTO implements VisitableCRUDEntityDTO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
 	private Date createDate;
 

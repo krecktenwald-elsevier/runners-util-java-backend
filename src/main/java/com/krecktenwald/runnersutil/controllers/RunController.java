@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.krecktenwald.runnersutil.domain.dto.RunDTO;
-import com.krecktenwald.runnersutil.domain.dto.mapper.DTOMapper;
+import com.krecktenwald.runnersutil.domain.dto.mapper.impl.RunDTO;
+import com.krecktenwald.runnersutil.domain.dto.mapper.impl.DTOMapper;
 import com.krecktenwald.runnersutil.domain.entities.Run;
 import com.krecktenwald.runnersutil.repositories.RunRepository;
 
@@ -51,7 +51,7 @@ public class RunController {
 
 	@PostMapping()
 	public ResponseEntity<Run> createRun(@RequestBody @Valid RunDTO runDTO) throws URISyntaxException {
-		Run run = dtoMapper.runDTOToRun(runDTO);
+		Run run = dtoMapper.map(runDTO);
 		run.setRunId(UUID.randomUUID().toString());
 		run.setCreateDate(new Date());
 		Run savedRun = runRepository.save(run);
@@ -62,12 +62,12 @@ public class RunController {
 	public ResponseEntity<Run> updateRun(@PathVariable String id, @RequestBody RunDTO runDTO) {
 		Run currentRun = runRepository.findById(id).orElseThrow(RuntimeException::new);
 
-		currentRun.setDateTime(runDTO.getDateTime());
-		currentRun.setDuration(runDTO.getDuration());
+		currentRun.setStartDateTime(runDTO.getStartDateTime());
+		currentRun.setEndDateTime(runDTO.getEndDateTime());
 		currentRun.setDistance(runDTO.getDistance());
 		currentRun.setUpdateDate(new Date());
 
-		currentRun = runRepository.save(dtoMapper.runDTOToRun(runDTO));
+		currentRun = runRepository.save(dtoMapper.map(runDTO));
 
 		return ResponseEntity.ok(currentRun);
 	}

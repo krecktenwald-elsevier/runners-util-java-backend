@@ -19,10 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.krecktenwald.runnersutil.domain.dto.RouteDTO;
-import com.krecktenwald.runnersutil.domain.dto.UserDTO;
-import com.krecktenwald.runnersutil.domain.dto.mapper.DTOMapper;
-import com.krecktenwald.runnersutil.domain.entities.Route;
+import com.krecktenwald.runnersutil.domain.dto.mapper.impl.UserDTO;
+import com.krecktenwald.runnersutil.domain.dto.mapper.impl.DTOMapper;
 import com.krecktenwald.runnersutil.domain.entities.User;
 import com.krecktenwald.runnersutil.repositories.UserRepository;
 
@@ -52,7 +50,7 @@ public class UserController {
 
 	@PostMapping()
 	public ResponseEntity<User> createUser(@RequestBody @Valid UserDTO userDTO) throws URISyntaxException {
-		User user = dtoMapper.userDTOToUser(userDTO);
+		User user = dtoMapper.map(userDTO);
 		user.setCreateDate(new Date());
 		User savedUser = userRepository.save(user);
 		return ResponseEntity.created(new URI("/users/" + savedUser.getUserId())).body(savedUser);
@@ -62,12 +60,7 @@ public class UserController {
 	public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody UserDTO userDTO) {
 		User currentUser = userRepository.findById(id).orElseThrow(RuntimeException::new);
 
-		currentUser.setEmail(userDTO.getEmail());
-		currentUser.setFirstName(userDTO.getFirstName());
-		currentUser.setLastName(userDTO.getLastName());
-		currentUser.setPassword(userDTO.getPassword());
-
-		currentUser = userRepository.save(dtoMapper.userDTOToUser(userDTO));
+		currentUser = userRepository.save(dtoMapper.map(userDTO));
 
 		return ResponseEntity.ok(currentUser);
 	}
